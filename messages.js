@@ -2,13 +2,14 @@
   "use strict";
 
   var cradle = require('cradle')
+    , forEachAsync = require('forEachAsync')
     , db = new(cradle.Connection)().database('devfeed')
     ;
 
   function handler(app) {
     /* routers */
     app.post('/send', incoming);
-    app.get('/update/:nick/:timestamp', allFrom);
+    app.get('/update/:timestamp', allFrom);
 
     /* router workers */
     function incoming(req, res) {
@@ -31,22 +32,29 @@
           return;
         }
         respondSuccess(res, "Saved!");
+        return;
       });
     }
 
     function allFrom(req, res) {
-      var notify = false
-        , nick
-        , timestamp
+      if(!req.params.hasOwnProperty('timestamp') || !isNum(req.params.timestamp)) {
+        respondFail(res, "Timestamp missing!");
+        return;
+      }
+      var timestamp = req.params.timestamp
+        , msgGroup = {}
         ;
 
-      if(!req.params.hasOwnProperty(timestamp)
-      || !req.params.hasOwnProperty(nick)) {
-        respondFail(res, "Timestamp or nickname missing!");
-      }
-      
-      // Needs to grab new messages from the db and send them back to the user.
-
+      db.view('feed/messages', function(err, dbRes) {
+        forEachAsync(dbRes, function(next, key, value) {
+          if(key > timestamp) {
+            msgGroup[key] = value;
+          }
+          next();
+        }).then(function() {
+          res.end(JSON.stringify(msgGroup));
+        });
+      });
     }
 
     /* helpers */
@@ -58,6 +66,13 @@
     function respondSuccess(res, message) {
       var response = { success: true, result: message };
       res.end(JSON.stringify(response));
+    }
+
+    function isNum(n) {
+      if(typeof n === 'string') {
+        n.replace(/\w/, '');
+      }
+      return !isNaN(parseFloat(n)) && isFinite(n);
     }
   }
   module.exports = handler;

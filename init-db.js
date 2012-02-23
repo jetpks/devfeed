@@ -26,6 +26,13 @@
       }
     }
     */
+    messages: {
+      map: function(doc) {
+        if(doc.type === 'message') {
+          emit(doc.timestamp, doc);
+        }
+      }
+    }
   };
 
   db = cradle.database(dbName);
