@@ -4,8 +4,7 @@ DevFeed
 DevFeed is a communications server for developers that allows message sharing
 in real time.
 
-Some features:
-
+# Some features:
   * JSON/Resty API.
   * Simple
   * History support (e.g. get all messages since <timestamp>);
@@ -19,26 +18,32 @@ API Documentation:
   * POST only.
   * Expecting an object that looks like this in the post body:
 
-    {
-        nick: "name"
-      , message: "Message goes here."
-    }
+      {
+          nick: "name"
+        , message: "Message goes here."
+      }
 
   * `nick` is the name that the user wishes to post under.
   * `message` is the message that the user wishes to post.
 
 
-### `/update/:timestamp`
+### `/update/since/:timestamp`
   * Usage: To get messages from the chat room.
   * GET only.
-  * :timestamp needs to be replaced with a timestamp sometime in the past. The
+  * `:timestamp` needs to be replaced with a timestamp sometime in the past. The
     timestamp represents how far back you would like messages from. For
     example, if the current time was `1330071170397`, a :timestamp of 
     `1330071110397` would get all messages posted in the last minute.
 
-    You could also post a :timestamp of 0 to get all messages ever posted in
+    You could also post a `:timestamp` of 0 to get all messages ever posted in
     the room.
 
+### `/update/last/:seconds`
+  * Usage: To get messages from the chat room that happened during previous
+    `:seconds` amount of seconds.
+  * GET only.
+  * `:seconds` needs to be replaced with a positive integer value which
+    indicates the maximum age in seconds of the posts that will be returned.
 
 ### `/server/time`
   * Usage: To get the server's current time.
