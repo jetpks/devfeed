@@ -94,6 +94,7 @@ eric@russia:~ $ curl -s localhost:9001/update/since/0 | python -m json.tool
     indicates the maximum age in seconds of the posts that will be returned.
 
   * Success looks like this:
+
 ```bash
 eric@russia:~ $ curl -s localhost:9001/update/last/1500 | python -m json.tool
 ```
