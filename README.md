@@ -19,9 +19,11 @@ API Documentation:
   * On success: `{ success: true, result: { data: data } }`
   * On failure: `{ success: false, result: "Message about the failure." }`
 
-  * `success` tells you whether or not your request was successfull, and 
+  * `success` tells you whether or not your request was successful.
   * If `success` is true, then `result` contains the data you were asking for.
-  * If `success` is false, then `result` contains an error message.
+    and the `result` will always be an object.
+  * If `success` is false, then `result` contains an error message, and
+    `result` will always be a string.
 
 
 ### Resources
