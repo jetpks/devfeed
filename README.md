@@ -5,6 +5,7 @@ DevFeed is a communications server for developers that allows message sharing
 in real time.
 
 Some features:
+
   * JSON/Resty API.
   * Simple
   * History support (e.g. get all messages since <timestamp>);
@@ -22,6 +23,7 @@ API Documentation:
         nick: "name"
       , message: "Message goes here."
     }
+
   * `nick` is the name that the user wishes to post under.
   * `message` is the message that the user wishes to post.
 
