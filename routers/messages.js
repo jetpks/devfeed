@@ -11,7 +11,8 @@
   function handler(app) {
     /* routers */
     app.post('/send', incoming);
-    app.get('/update/:timestamp', allFrom);
+    app.get('/update/since/:timestamp', since);
+    app.get('/update/last/:seconds', last);
 
     /* router workers */
     function incoming(req, res) {
@@ -33,12 +34,12 @@
           helper.respondFail(res, "Problem saving to database.");
           return;
         }
-        helper.respondSuccess(res, "Saved!");
+        helper.respondSuccess(res, {saved: true, timestamp: timestamp});
         return;
       });
     }
 
-    function allFrom(req, res) {
+    function since(req, res) {
       if(!req.params.hasOwnProperty('timestamp') || !helper.isNum(req.params.timestamp)) {
         helper.respondFail(res, "Timestamp missing!");
         return;
@@ -55,12 +56,43 @@
         forEachAsync(dbRes, function(next, key, value) {
           if(key > timestamp) {
             msgGroup[key] = value;
+            delete msgGroup[key]._id;
+            delete msgGroup[key]._rev;
           }
           next();
         }).then(function() {
           helper.respondSuccess(res, msgGroup);
         });
       });
+    }
+
+    function last(req, res) {
+      if(!req.params.hasOwnProperty('seconds') || !helper.isNum(req.params.seconds)) {
+        helper.respondFail(res, "Bad query! (missing seconds)");
+        return;
+      }
+      var seconds = req.params.seconds * 1000
+        , msgGroup = {}
+        , now = Date.now()
+        ;
+
+      db.view('feed/messages', function(err, dbRes) {
+        if(!dbRes) {
+          helper.respondSuccess(res, {});
+          return;
+        }
+        forEachAsync(dbRes, function(next, key, value) {
+          if(now - key < seconds) {
+            msgGroup[key] = value;
+            delete msgGroup[key]._id;
+            delete msgGroup[key]._rev;
+          }
+          next();
+        }).then(function() {
+          helper.respondSuccess(res, msgGroup);
+        });
+      });
+
     }
 
   }
