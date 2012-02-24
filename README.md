@@ -44,7 +44,9 @@ API Documentation:
   * Example:
 
 ```bash
-    eric@russia:~ $ curl -X POST localhost:9001/send -H 'Content-type: application/json' -d '{"nick": "eric", "message": "Iam a bus!" }'
+    eric@russia:~ $ curl -X POST localhost:9001/send \
+      -H 'Content-type: application/json' \
+      -d '{"nick": "eric", "message": "Iam a bus!" }'
 ```
 ```json
     { "success": true, "result": { "saved": true, "timestamp": 1330073393938 }}
