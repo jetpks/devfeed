@@ -30,20 +30,20 @@ API Documentation:
   * POST only.
   * Expecting an object that looks like this in the post body:
 
-
+```json
       {
           nick: "name"
         , message: "Message goes here."
       }
-
+```
 
   * `nick` is the name that the user wishes to post under.
   * `message` is the message that the user wishes to post.
   * Successful response looks like this: 
 
-  
+```json
     { "success": true, "result": { "saved": true, "timestamp": 1330073393938 }}
-
+```
 
 ## `/update/since/:timestamp`
   * Usage: To get messages from the chat room.
@@ -58,7 +58,7 @@ API Documentation:
 
   * Success looks like this:
 
-
+```json
     {
         "result": {
             "1329941180485": {
@@ -76,7 +76,7 @@ API Documentation:
         }, 
         "success": true
     } 
-
+```
 
 ## `/update/last/:seconds`
   * Usage: To get messages from the chat room that happened during previous
@@ -87,7 +87,7 @@ API Documentation:
 
   * Success looks like this:
 
-
+```json
     {
         "result": {
             "1330073393938": {
