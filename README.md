@@ -13,7 +13,7 @@ in real time.
 API Documentation:
 ---
 
-### Structure
+# Structure
 ##   Responses are always formatted as such:
 
   * On success: `{ success: true, result: { data: data } }`
@@ -26,7 +26,7 @@ API Documentation:
     `result` will always be a string.
 
 
-### Resources
+# Resources
 ## `/send`
   * Usage: To post a message to the chat.
   * POST only.
