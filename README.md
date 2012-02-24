@@ -39,8 +39,11 @@ API Documentation:
 
   * `nick` is the name that the user wishes to post under.
   * `message` is the message that the user wishes to post.
-  * Successful response looks like this: 
+  * Example:
 
+```bash
+    eric@russia:~ $ curl -X POST localhost:9001/send -H 'Content-type: application/json' -d '{"nick": "eric", "message": "Iam a bus!" }'
+```
 ```json
     { "success": true, "result": { "saved": true, "timestamp": 1330073393938 }}
 ```
@@ -56,8 +59,11 @@ API Documentation:
     You could also post a `:timestamp` of 0 to get all messages ever posted in
     the room.
 
-  * Success looks like this:
+  * Example:
 
+```bash
+eric@russia:~ $ curl -s localhost:9001/update/since/0 | python -m json.tool
+```
 ```json
     {
         "result": {
@@ -68,7 +74,7 @@ API Documentation:
                 "type": "message"
             }, 
             "1330073393938": {
-                "message": "I'm a bus!", 
+                "message": "Iam a bus!", 
                 "nick": "eric", 
                 "timestamp": 1330073393938, 
                 "type": "message"
@@ -86,12 +92,14 @@ API Documentation:
     indicates the maximum age in seconds of the posts that will be returned.
 
   * Success looks like this:
-
+```bash
+eric@russia:~ $ curl -s localhost:9001/update/last/1500 | python -m json.tool
+```
 ```json
     {
         "result": {
             "1330073393938": {
-                "message": "I'm a bus!", 
+                "message": "Iam a bus!", 
                 "nick": "eric", 
                 "timestamp": 1330073393938, 
                 "type": "message"
@@ -99,7 +107,7 @@ API Documentation:
         }, 
         "success": true
     }
-
+```
 
 ## `/server/time`
   * Usage: To get the server's current time.
@@ -107,3 +115,16 @@ API Documentation:
   * This is useful to calculate the offset between the client's time and the
     server time. Because all requests for `/update/:timestamp` are based on the
     server time, the offset is useful.
+  * Example:
+
+```bash
+eric@russia:~ $ curl -s localhost:9001/server/time | python -m json.tool
+```
+```json
+    {
+        "result": {
+            "serverTime": 1330074623482
+        }, 
+        "success": true
+    }
+```
